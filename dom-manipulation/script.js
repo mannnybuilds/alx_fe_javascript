@@ -40,6 +40,20 @@ function populateCategories() {
   categoryFilter.value = selectedCategory;
 }
 
+// Simulate fetching quotes from a server (replace URL with real endpoint if needed)
+function fetchQuotesFromServer() {
+  // Example: Simulate with a Promise and some default quotes
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
+        { text: "Life is what happens when you're busy making other plans.", category: "Life" },
+        { text: "Success is not in what you have, but who you are.", category: "Success" }
+      ]);
+    }, 500); // Simulate network delay
+  });
+}
+
 // Show a random quote from the filtered list
 function showRandomQuoteFromFiltered() {
   const category = selectedCategory;
