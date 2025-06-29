@@ -168,6 +168,15 @@ function addQuote() {
   postQuoteToServer(newQuote);
 }
 
+// Synchronize quotes with the server (placeholder/demo implementation)
+async function syncQuotes() {
+  // Example: POST all local quotes to the server (demo only)
+  for (const quote of quotes) {
+    await postQuoteToServer(quote);
+  }
+  console.log("Quotes synchronized with server.");
+}
+
 // Filter quotes based on selected category and show one random quote
 function filterQuotes() {
   const category = document.getElementById("categoryFilter").value;
