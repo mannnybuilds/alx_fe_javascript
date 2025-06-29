@@ -60,6 +60,26 @@ async function fetchQuotesFromServer() {
   }
 }
 
+// Example function to demonstrate a POST request with headers
+async function postQuoteToServer(quote) {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(quote)
+    });
+    const data = await response.json();
+    // You can log or use the response as needed
+    console.log("Posted quote:", data);
+    return data;
+  } catch (error) {
+    console.error("Failed to post quote:", error);
+    return null;
+  }
+}
+
 window.onload = async function () {
   loadQuotes();
   if (quotes.length === 0) {
@@ -127,6 +147,25 @@ function showRandomQuoteFromFiltered() {
   const randomIndex = Math.floor(Math.random() * filtered.length);
   const q = filtered[randomIndex];
   display.innerHTML = `<div>"${q.text}" (${q.category})</div>`;
+}
+
+function addQuote() {
+  const text = document.getElementById("newQuoteText").value.trim();
+  const category = document.getElementById("newQuoteCategory").value.trim();
+  if (!text || !category) {
+    alert("Please fill in both quote and category.");
+    return;
+  }
+  const newQuote = { text, category };
+  quotes.push(newQuote);
+  document.getElementById("newQuoteText").value = "";
+  document.getElementById("newQuoteCategory").value = "";
+  saveQuotes();
+  populateCategories();
+  filterQuotes();
+  alert("Quote added successfully!");
+  // Demonstrate POST request (optional)
+  postQuoteToServer(newQuote);
 }
 
 // Filter quotes based on selected category and show one random quote
