@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +8,12 @@
 </head>
 <body>
   <h1>Dynamic Quote Generator</h1>
+  <!-- Already present in your HTML, but for clarity: -->
+<select id="categoryFilter">
+  <option value="all">All Categories</option>
+</select>
   <div id="app"></div>
   <button id="exportBtn">Export Quotes</button>
-  <input type="file" id="importFile" accept=".json" />
   <script src="script.js"></script>
 </body>
 </html>
