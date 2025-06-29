@@ -1,4 +1,5 @@
 let quotes = [];
+let selectedCategory = "all"; // Track the selected category
 
 // Load quotes from localStorage
 function loadQuotes() {
@@ -31,16 +32,18 @@ function populateCategories() {
     opt.textContent = cat;
     categoryFilter.appendChild(opt);
   });
-  // Restore last selected filter from localStorage
+  // Restore last selected filter from localStorage or use selectedCategory
   const lastFilter = localStorage.getItem("lastCategoryFilter");
   if (lastFilter) {
-    categoryFilter.value = lastFilter;
+    selectedCategory = lastFilter;
   }
+  categoryFilter.value = selectedCategory;
 }
 
 // Filter quotes based on selected category
 function filterQuotes() {
   const category = document.getElementById("categoryFilter").value;
+  selectedCategory = category; // Update selectedCategory
   localStorage.setItem("lastCategoryFilter", category); // Remember filter
   const display = document.getElementById("quoteDisplay");
   let filtered = quotes;
