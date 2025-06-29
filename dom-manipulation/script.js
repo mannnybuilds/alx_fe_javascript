@@ -185,6 +185,13 @@ function filterQuotes() {
   showRandomQuoteFromFiltered();
 }
 
+  filterQuotes();
+
+  // Automatically show a new random quote every 10 seconds
+  setInterval(() => {
+    showRandomQuoteFromFiltered();
+  }, 10000);
+
 // Add quote form creation
 function createAddQuoteForm(container) {
   const form = document.createElement("div");
