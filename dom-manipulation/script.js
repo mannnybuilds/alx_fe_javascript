@@ -152,3 +152,27 @@ window.onload = function () {
     showRandomQuote();
   }
 };
+
+// ...existing code...
+
+window.onload = function () {
+  const app = document.getElementById("app");
+
+  // ...existing code...
+
+  // Use the export button from HTML if it exists
+  const exportBtn = document.getElementById("exportBtn");
+  if (exportBtn) {
+    exportBtn.addEventListener("click", exportQuotes);
+  } else {
+    // Fallback: create it dynamically if not present
+    const btn = document.createElement("button");
+    btn.textContent = "Export Quotes (JSON)";
+    btn.type = "button";
+    btn.style.marginLeft = "10px";
+    btn.addEventListener("click", exportQuotes);
+    app.appendChild(btn);
+  }
+
+  // ...existing code...
+};
