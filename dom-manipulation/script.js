@@ -51,7 +51,10 @@ function filterQuotes() {
     display.textContent = "No quotes found in this category.";
     return;
   }
-  display.innerHTML = filtered.map(q => `<div>"${q.text}" (${q.category})</div>`).join("");
+  // Show one random quote from the filtered list
+  const randomIndex = Math.floor(Math.random() * filtered.length);
+  const q = filtered[randomIndex];
+  display.innerHTML = `<div>"${q.text}" (${q.category})</div>`;
 }
 
 // Add quote form creation
