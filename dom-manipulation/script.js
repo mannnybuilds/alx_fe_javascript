@@ -40,19 +40,77 @@ function populateCategories() {
   categoryFilter.value = selectedCategory;
 }
 
-// Simulate fetching quotes from a server (replace URL with real endpoint if needed)
-function fetchQuotesFromServer() {
-  // Example: Simulate with a Promise and some default quotes
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
-        { text: "Life is what happens when you're busy making other plans.", category: "Life" },
-        { text: "Success is not in what you have, but who you are.", category: "Success" }
-      ]);
-    }, 500); // Simulate network delay
-  });
+// Fetch quotes from a real API endpoint using async/await
+async function fetchQuotesFromServer() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const data = await response.json();
+    // Map the fetched posts to your quote format (use first 5 for demo)
+    return data.slice(0, 5).map(post => ({
+      text: post.title,
+      category: "Imported"
+    }));
+  } catch (error) {
+    // Fallback to default quotes if fetch fails
+    return [
+      { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
+      { text: "Life is what happens when you're busy making other plans.", category: "Life" },
+      { text: "Success is not in what you have, but who you are.", category: "Success" }
+    ];
+  }
 }
+
+window.onload = async function () {
+  loadQuotes();
+  if (quotes.length === 0) {
+    // If no quotes in localStorage, fetch from server
+    quotes = await fetchQuotesFromServer();
+    saveQuotes();
+  }
+  populateCategories();
+
+  // Create quote display area if not present
+  let quoteDisplay = document.getElementById("quoteDisplay");
+  if (!quoteDisplay) {
+    quoteDisplay = document.createElement("div");
+    quoteDisplay.id = "quoteDisplay";
+    quoteDisplay.style.margin = "20px 0";
+    document.getElementById("app").appendChild(quoteDisplay);
+  }
+
+  filterQuotes();
+
+  // Make quote display clickable to show another random quote from current filter
+  quoteDisplay.addEventListener("click", function () {
+    // Only show a new random quote if there is more than one in the filtered list
+    const category = selectedCategory;
+    let filtered = quotes;
+    if (category !== "all") {
+      filtered = quotes.filter(q => q.category === category);
+    }
+    if (filtered.length > 1) {
+      showRandomQuoteFromFiltered();
+    }
+  });
+
+  // Create add-quote form
+  createAddQuoteForm(document.getElementById("app"));
+
+  // Attach filterQuotes to the dropdown
+  document.getElementById("categoryFilter").addEventListener("change", filterQuotes);
+
+  // Attach export functionality
+  const exportBtn = document.getElementById("exportBtn");
+  if (exportBtn) {
+    exportBtn.addEventListener("click", exportQuotes);
+  }
+
+  // Attach import functionality if you have an input with id="importFile"
+  const importInput = document.getElementById("importFile");
+  if (importInput) {
+    importInput.addEventListener("change", importFromJsonFile);
+  }
+};
 
 // Show a random quote from the filtered list
 function showRandomQuoteFromFiltered() {
