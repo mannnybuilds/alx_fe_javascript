@@ -174,7 +174,9 @@ async function syncQuotes() {
   for (const quote of quotes) {
     await postQuoteToServer(quote);
   }
-  console.log("Quotes synchronized with server.");
+  console.log("Quotes synced with server!");
+  // Or use alert if required:
+  // alert("Quotes synced with server!");
 }
 
 // Filter quotes based on selected category and show one random quote
