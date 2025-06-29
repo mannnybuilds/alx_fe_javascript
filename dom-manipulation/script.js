@@ -40,24 +40,29 @@ function populateCategories() {
   categoryFilter.value = selectedCategory;
 }
 
-// Filter quotes based on selected category
-function filterQuotes() {
-  const category = document.getElementById("categoryFilter").value;
-  selectedCategory = category; // Update selectedCategory
-  localStorage.setItem("lastCategoryFilter", category); // Remember filter
-  const display = document.getElementById("quoteDisplay");
+// Show a random quote from the filtered list
+function showRandomQuoteFromFiltered() {
+  const category = selectedCategory;
   let filtered = quotes;
   if (category !== "all") {
     filtered = quotes.filter(q => q.category === category);
   }
+  const display = document.getElementById("quoteDisplay");
   if (filtered.length === 0) {
     display.textContent = "No quotes found in this category.";
     return;
   }
-  // Show one random quote from the filtered list
   const randomIndex = Math.floor(Math.random() * filtered.length);
   const q = filtered[randomIndex];
   display.innerHTML = `<div>"${q.text}" (${q.category})</div>`;
+}
+
+// Filter quotes based on selected category and show one random quote
+function filterQuotes() {
+  const category = document.getElementById("categoryFilter").value;
+  selectedCategory = category; // Update selectedCategory
+  localStorage.setItem("lastCategoryFilter", category); // Remember filter
+  showRandomQuoteFromFiltered();
 }
 
 // Add quote form creation
@@ -138,6 +143,19 @@ window.onload = function () {
   }
 
   filterQuotes();
+
+  // Make quote display clickable to show another random quote from current filter
+  quoteDisplay.addEventListener("click", function () {
+    // Only show a new random quote if there is more than one in the filtered list
+    const category = selectedCategory;
+    let filtered = quotes;
+    if (category !== "all") {
+      filtered = quotes.filter(q => q.category === category);
+    }
+    if (filtered.length > 1) {
+      showRandomQuoteFromFiltered();
+    }
+  });
 
   // Create add-quote form
   createAddQuoteForm(document.getElementById("app"));
